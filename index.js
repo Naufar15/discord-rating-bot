@@ -1,3 +1,4 @@
+const express = require("express");
 const {
   Client,
   GatewayIntentBits,
@@ -8,14 +9,20 @@ const {
 const { REST } = require("@discordjs/rest");
 require("dotenv").config();
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Tambahkan route sederhana agar Render tahu bot ini aktif
+app.get("/", (req, res) => res.send("✅ Discord bot is running!"));
+app.listen(PORT, () => console.log(`🌐 Web service running on port ${PORT}`));
+
 const token = process.env.TOKEN;
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;
 
-// Inisialisasi bot
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-// Registrasi slash command
+// ===== Slash Command Registration =====
 const commands = [
   new SlashCommandBuilder()
     .setName("rating")
@@ -57,14 +64,12 @@ client.once("ready", () => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
-  // ✅ Daftar channel yang diizinkan
   const allowedChannels = [
-    "1424685610790293524", // Channel 1
-    "1153267423517081632", // Channel 2
-    "1153253123427680266", // Channel 3 (opsional)
+    "1424685610790293524",
+    "1153267423517081632",
+    "1153253123427680266",
   ];
 
-  // Jika bukan dari salah satu channel di atas, tolak
   if (!allowedChannels.includes(interaction.channelId)) {
     const errorEmbed = new EmbedBuilder()
       .setColor("#ff4d4d")
@@ -74,10 +79,7 @@ client.on("interactionCreate", async (interaction) => {
       )
       .setFooter({ text: "Please switch to the correct channel 🙏" });
 
-    return interaction.reply({
-      embeds: [errorEmbed],
-      ephemeral: true, // hanya terlihat oleh user tsb
-    });
+    return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
   }
 
   if (interaction.commandName === "rating") {
@@ -96,16 +98,14 @@ client.on("interactionCreate", async (interaction) => {
         "**Order Completed Successfully!** 🛒<a:Verify:1424709955805515849>"
       )
       .addFields(
-        { name: "⭐ Rating:", value: stars, inline: false },
+        { name: "⭐ Rating:", value: stars },
         {
           name: "<a:amongus:1424709753426284576> Customer",
           value: `<@${user.id}>`,
-          inline: false,
         },
         {
           name: "<a:pixdreamsnani73:1424709901783011348> Comment",
           value: "```" + comment + "```",
-          inline: false,
         }
       )
       .setImage(defaultImage)

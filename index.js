@@ -81,7 +81,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
         .setColor("#ff73fa")
         .setTitle("<a:boost:1424800034560124980> Thanks for the Boost!")
         .setDescription(
-          `A huge shoutout to <@${newMember.id}> for boosting the server! <a:pink_flame:1424709893314842674><a:yo:1424709966266105856>\nYou just made this community even more awesome! 🚀`
+          `WOOO! <@${newMember.id}> just dropped a boost! <a:pink_flame:1424709893314842674><a:yo:1424709966266105856>\nThanks for leveling up our server — you're awesome! <a:PB_rocket_wheelchair21:1426157226417983509><a:Rocket:1426157234332893184>`
         )
         .setThumbnail(newMember.user.displayAvatarURL({ dynamic: true }))
         .setFooter({

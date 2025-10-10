@@ -12,7 +12,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Tambahkan route sederhana agar Render tahu bot ini aktif
+// Route sederhana agar Render tahu bot ini aktif
 app.get("/", (req, res) => res.send("✅ Discord bot is running!"));
 app.listen(PORT, () => console.log(`🌐 Web service running on port ${PORT}`));
 
@@ -20,11 +20,9 @@ const token = process.env.TOKEN;
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;
 
+// Inisialisasi client dengan intents yang dibutuhkan
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers, // tambahkan ini
-  ],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
 // ===== Slash Command Registration =====
@@ -58,59 +56,49 @@ const rest = new REST({ version: "10" }).setToken(token);
     });
     console.log("✅ Slash command /rating registered successfully!");
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error registering slash command:", error);
   }
 })();
 
+// ===== When Bot is Ready =====
 client.once("ready", async () => {
   console.log(`🤖 Bot is online as ${client.user.tag}`);
-
-  // === Simulasi event boost ===
-  const guild = client.guilds.cache.get(process.env.GUILD_ID);
-  if (!guild)
-    return console.log("⚠️ Guild tidak ditemukan untuk simulasi boost.");
-
-  // ✅ Tambahkan baris ini untuk memaksa load semua member
-  await guild.members.fetch();
-  console.log(`🧠 Total member di-cache: ${guild.members.cache.size}`);
-
-  const testMember = guild.members.cache.get("390368730850525184"); // Ganti dengan ID kamu
-  if (testMember) {
-    client.emit("guildMemberUpdate", {}, testMember);
-    console.log("🧪 Simulasi boost dijalankan untuk:", testMember.user.tag);
-  } else {
-    console.log("⚠️ Member dengan ID tersebut tidak ditemukan di cache guild.");
-  }
 });
 
 // ===== Server Boost Detection =====
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
-  if (!oldMember.premiumSince && newMember.premiumSince) {
-    const boostChannel = newMember.guild.channels.cache.get(
-      "1355122803460018277"
-    ); // gunakan ID, bukan nama!
+  try {
+    // Deteksi boost baru
+    if (!oldMember.premiumSince && newMember.premiumSince) {
+      const boostChannel = newMember.guild.channels.cache.get(
+        "1355122803460018277"
+      ); // ID channel #boost kamu
 
-    if (!boostChannel) return console.log("⚠️ Channel #boost tidak ditemukan.");
+      if (!boostChannel)
+        return console.log("⚠️ Channel #boost tidak ditemukan.");
 
-    const thankEmbed = new EmbedBuilder()
-      .setColor("#ff73fa")
-      .setTitle(
-        "<a:spinheartpink:1424709931252318270> Thanks for the Boost! <a:spinheartpink:1424709931252318270>"
-      )
-      .setDescription(
-        `WOOO! <@${newMember.id}> just dropped a boost! <a:yo:1424709966266105856><a:pink_flame:1424709893314842674>\nThanks for leveling up our server — you're awesome! <a:PB_rocket_wheelchair21:1426157226417983509><a:Rocket:1426157234332893184>`
-      )
-      .setThumbnail(newMember.user.displayAvatarURL({ dynamic: true }))
-      .setFooter({
-        text: `${newMember.user.username} just boosted the server!`,
-        iconURL: newMember.user.displayAvatarURL({ dynamic: true }),
-      })
-      .setTimestamp();
+      const thankEmbed = new EmbedBuilder()
+        .setColor("#ff73fa")
+        .setTitle("<a:boost:1424800034560124980> Thanks for the Boost!")
+        .setDescription(
+          `A huge shoutout to <@${newMember.id}> for boosting the server! <a:pink_flame:1424709893314842674><a:yo:1424709966266105856>\nYou just made this community even more awesome! 🚀`
+        )
+        .setThumbnail(newMember.user.displayAvatarURL({ dynamic: true }))
+        .setFooter({
+          text: `${newMember.user.username} just boosted the server!`,
+          iconURL: newMember.user.displayAvatarURL({ dynamic: true }),
+        })
+        .setTimestamp();
 
-    await boostChannel.send({ embeds: [thankEmbed] });
+      await boostChannel.send({ embeds: [thankEmbed] });
+      console.log(`💖 Sent boost thank-you message for ${newMember.user.tag}`);
+    }
+  } catch (error) {
+    console.error("❌ Error handling boost event:", error);
   }
 });
 
+// ===== Rating Command =====
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 

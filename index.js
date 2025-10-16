@@ -2,6 +2,7 @@ const express = require("express");
 const {
   Client,
   GatewayIntentBits,
+  Partials,
   SlashCommandBuilder,
   Routes,
   EmbedBuilder,
@@ -12,20 +13,32 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Route sederhana agar Render tahu bot ini aktif
+// === Web server sederhana agar bot tetap aktif di hosting (Render, dsb)
 app.get("/", (req, res) => res.send("✅ Discord bot is running!"));
 app.listen(PORT, () => console.log(`🌐 Web service running on port ${PORT}`));
 
+// === Variabel environment
 const token = process.env.TOKEN;
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;
 
-// Inisialisasi client dengan intents yang dibutuhkan
+// === Cek environment variable
+if (!token || !clientId || !guildId) {
+  console.error("❌ Missing TOKEN, CLIENT_ID, or GUILD_ID in environment!");
+  process.exit(1);
+}
+
+// === Inisialisasi client
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+  ],
+  partials: [Partials.GuildMember, Partials.User],
 });
 
-// ===== Slash Command Registration =====
+// === Register slash command ===
 const commands = [
   new SlashCommandBuilder()
     .setName("rating")
@@ -60,22 +73,26 @@ const rest = new REST({ version: "10" }).setToken(token);
   }
 })();
 
-// ===== When Bot is Ready =====
+// === Bot ready ===
 client.once("ready", async () => {
   console.log(`🤖 Bot is online as ${client.user.tag}`);
+  setInterval(() => console.log("🟢 Bot heartbeat ping"), 1000 * 60 * 5);
 });
 
-// ===== Server Boost Detection =====
+// === Server Boost Detection ===
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   try {
-    // Deteksi boost baru
-    if (!oldMember.premiumSince && newMember.premiumSince) {
+    console.log("🔁 guildMemberUpdate triggered for:", newMember.user?.tag);
+
+    // Cek apakah member baru saja melakukan boost
+    if (!oldMember || (!oldMember.premiumSince && newMember.premiumSince)) {
       const boostChannel = newMember.guild.channels.cache.get(
         "1355122803460018277"
-      ); // ID channel #boost kamu
-
-      if (!boostChannel)
-        return console.log("⚠️ Channel #boost tidak ditemukan.");
+      );
+      if (!boostChannel) {
+        console.log("⚠️ Boost channel not found! ID:", "1355122803460018277");
+        return;
+      }
 
       const thankEmbed = new EmbedBuilder()
         .setColor("#ff73fa")
@@ -100,7 +117,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   }
 });
 
-// ===== Rating Command =====
+// === Rating Command ===
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 

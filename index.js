@@ -82,10 +82,23 @@ client.once("ready", async () => {
 // === Server Boost Detection ===
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   try {
-    console.log("🔁 guildMemberUpdate triggered for:", newMember.user?.tag);
+    // Jika data lama & baru tidak punya premiumSince, abaikan (tidak ada boost)
+    if (!oldMember?.premiumSince && !newMember?.premiumSince) return;
 
-    // Cek apakah member baru saja melakukan boost
-    if (!oldMember || (!oldMember.premiumSince && newMember.premiumSince)) {
+    // Jika boost baru terdeteksi
+    if (!oldMember?.premiumSince && newMember?.premiumSince) {
+      const diff = Date.now() - newMember.premiumSinceTimestamp;
+
+      // Cegah kirim ulang untuk boost lama (lebih dari 1 menit)
+      if (diff > 60 * 1000) {
+        console.log(
+          `⏩ Ignored old boost from ${newMember.user.tag} (${Math.round(
+            diff / 1000
+          )}s ago)`
+        );
+        return;
+      }
+
       const boostChannel = newMember.guild.channels.cache.get(
         "1355122803460018277"
       );

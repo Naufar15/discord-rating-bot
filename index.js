@@ -208,20 +208,16 @@ client.on("interactionCreate", async (interaction) => {
 Server ini adalah tempat berkumpulnya komunitas berbagai minat, mulai dari gaming, modding, fotografi, hingga obrolan santai, dll.  
 Tujuan kami sederhana: menciptakan ruang yang nyaman, seru, dan terbuka untuk semua.  
 Sebelum berinteraksi, harap baca aturan berikut agar suasana tetap positif dan menyenangkan.
-
 ---
-
 ## ⚙️ **Dashboard**
 - <:Paperwork:1434157121288671262>  Baca semua aturan di <#1153261445736316998>.  
 - 💠 Ambil role kamu di <#1153261498064453722>.  
 ---
-
 ## 📢 **Announcements**
 - 📣 Info penting dari admin akan muncul di **#announcement**.  
 - 🔴 sedang stream **#stream-now**.  
 - 🎥 Share link livestream kalian di <#1153302328733077525>.  
 ---
-
 ## 💬 **Community**
 - 💭 Ngobrol bebas di <#1153272087226613770>.  
 - 😂 Post meme kalian di <#1153273809936318535>.  
@@ -229,11 +225,9 @@ Sebelum berinteraksi, harap baca aturan berikut agar suasana tetap positif dan m
 - 📸 Pamer hasil foto kalian di <#1153272916893515847>.  
 - 🎬 Share klip atau highlight di <#1153273148196790323>.  
 ---
-
 ## <a:ThisisaemojiHeart_3:1424709946775441490>  **Customer Review**
 - ⭐ Beri rating atau ulasan pembelian kalian di <#1424685610790293524>.  
 ---
-
 ## 🎨 **Mod Graphic Fivem**
 - 💬 Diskusi & obrolan seputar fivem di <#1359495147032940677>.  
 - 🖼️ Pamer hasil screenshot mod kalian di <#1426079591189057546>.  
@@ -241,6 +235,7 @@ Sebelum berinteraksi, harap baca aturan berikut agar suasana tetap positif dan m
 - 🎬 Preset berbayar di <#1403711998939758612>.  
 - 🎬 Bagikan graphic pack berbayar di <#1420685191655067762>.  
 - 🚧 Roads berbayar di <#1426798376007110690>.  
+
 - 🆓 Graphic pack gratis di <#1414937176302555229>.  
 - 🚧 Roads gratis di <#1359495340369252353>.  
 - 🌳 Cari mod vegetasi di <#1416133460426358885>.  
@@ -248,11 +243,9 @@ Sebelum berinteraksi, harap baca aturan berikut agar suasana tetap positif dan m
 - 🌌 Bahas atau share mod citizen di <#1427370970116784299>.  
 - 🎲 Mod random di <#1371053578994843739>.  
 ---
-
 ## 📩 **Tickets**
 - 📩 Beli di <#1353952676790013973>.  
 ---
-
 ## 🛡️ **Peraturan Umum**
 - Hormati semua member, no toxic, no drama.  
 - Jangan spam, flood, atau promosi tanpa izin.  

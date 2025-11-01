@@ -254,7 +254,7 @@ Sebelum berinteraksi, harap baca aturan berikut agar suasana tetap positif dan m
 - Tetap bebas, tetap liar, tapi tahu batas. Karena jadi barbar itu soal sikap, bukan kekacauan. <:asd:1426157199964504145>`
         )
         .setFooter({
-          text: "Barbar Boys Community",
+          text: "Barbar Boys",
           iconURL: interaction.guild.iconURL(),
         })
         .setTimestamp();

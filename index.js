@@ -201,7 +201,7 @@ client.on("interactionCreate", async (interaction) => {
     // === /rules ===
     if (interaction.commandName === "rules") {
       const rulesEmbed = new EmbedBuilder()
-        .setColor("#9b59b6")
+        .setColor("#FFA6A6FF")
         .setTitle("<:enchanted_book1:1434157118939725834>  Rules & Guidelines")
         .setDescription(
           `Selamat datang di **Barbar Boys**!  

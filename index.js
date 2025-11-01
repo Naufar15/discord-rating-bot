@@ -202,9 +202,7 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName === "rules") {
       const rulesEmbed = new EmbedBuilder()
         .setColor("#9b59b6")
-        .setTitle(
-          "<a:Minecraft_enchanted_book:1262325721322356828>  Rules & Guidelines"
-        )
+        .setTitle("<:enchanted_book1:1434157118939725834>  Rules & Guidelines")
         .setDescription(
           `Selamat datang di **Barbar Boys**!  
 Server ini adalah tempat berkumpulnya komunitas berbagai minat, mulai dari gaming, modding, fotografi, hingga obrolan santai, dll.  

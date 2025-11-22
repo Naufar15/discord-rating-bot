@@ -249,7 +249,10 @@ Sebelum berinteraksi, harap baca aturan berikut agar suasana tetap positif dan m
 ## 🛡️ **Peraturan Umum**
 - Hormati semua member, no toxic, no drama.  
 - Jangan spam, flood, atau promosi tanpa izin.  
-- **Gunakan channel sesuai fungsinya.**  
+- **Gunakan channel sesuai fungsinya.**
+- **Gunakan channel sesuai fungsinya.**
+- **Gunakan channel sesuai fungsinya.**
+- **Gunakan channel sesuai fungsinya.**
 - Keep channels clean, keep brain dirty (tapi no NSFW).  
 - Tetap bebas, tetap liar, tapi tahu batas. Karena jadi barbar itu soal sikap, bukan kekacauan. <:asd:1426157199964504145>`
         )

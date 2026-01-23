@@ -9,13 +9,9 @@ module.exports = (client) => {
 
   for (const file of commandFiles) {
     const command = require(path.join(commandsPath, file));
-
-    if (!command.data || !command.execute) {
-      console.log(`⚠️ Command ${file} tidak valid`);
-      continue;
+    if (command.data && command.execute) {
+      client.commands.set(command.data.name, command);
     }
-
-    client.commands.set(command.data.name, command);
   }
 
   console.log(`✅ Loaded ${client.commands.size} commands`);

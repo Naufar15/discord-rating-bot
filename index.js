@@ -1,6 +1,11 @@
 // === Load environment ===
 require("dotenv").config();
-const { Client, GatewayIntentBits, Partials } = require("discord.js");
+const {
+  Client,
+  GatewayIntentBits,
+  Partials,
+  Collection,
+} = require("discord.js");
 
 // === Create Discord Client ===
 const client = new Client({
@@ -12,7 +17,10 @@ const client = new Client({
   partials: [Partials.User, Partials.GuildMember],
 });
 
-// === Keep Alive Server (Render) ===
+// 🔥 INI YANG KURANG SELAMA INI
+client.commands = new Collection();
+
+// === Keep Alive Server ===
 require("./src/server/keepAlive");
 
 // === Load Handlers ===

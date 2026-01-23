@@ -17,7 +17,7 @@ const client = new Client({
   partials: [Partials.User, Partials.GuildMember],
 });
 
-// ✅ INIT COMMAND COLLECTION (INI YANG KURANG)
+// ✅ INI YANG KEMARIN BELUM ADA
 client.commands = new Collection();
 
 // === Keep Alive Server (Render / Uptime) ===

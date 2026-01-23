@@ -1,10 +1,11 @@
 const express = require("express");
+const app = express();
 
-module.exports = () => {
-  const app = express();
-  const PORT = process.env.PORT || 3000;
+app.get("/", (req, res) => {
+  res.send("Bot is running 🚀");
+});
 
-  app.get("/", (req, res) => res.send("✅ Discord bot is running smoothly!"));
-
-  app.listen(PORT, () => console.log(`🌐 Web service running on port ${PORT}`));
-};
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🌐 Server running on port ${PORT}`);
+});

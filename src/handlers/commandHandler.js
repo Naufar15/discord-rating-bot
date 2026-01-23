@@ -1,27 +1,34 @@
 const fs = require("fs");
 const path = require("path");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord.js");
-const { CLIENT_ID, GUILD_ID, TOKEN } = require("../config/env");
 
-module.exports = async (client) => {
-  client.commands = new Map();
+module.exports = async (client, rest, Routes, clientId, guildId) => {
   const commands = [];
+  const commandsPath = path.join(__dirname, "../commands");
+  const commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith(".js"));
 
-  const files = fs
-    .readdirSync(path.join(__dirname, "../commands"))
-    .filter((f) => f.endsWith(".js"));
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
 
-  for (const file of files) {
-    const command = require(`../commands/${file}`);
+    // 🔥 VALIDASI WAJIB
+    if (!command.data || !command.data.name || !command.data.description) {
+      console.error(`❌ Command ${file} missing name or description`);
+      continue;
+    }
+
     client.commands.set(command.data.name, command);
     commands.push(command.data.toJSON());
   }
 
-  const rest = new REST({ version: "10" }).setToken(TOKEN);
-  await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
-    body: commands,
-  });
-
-  console.log("✅ Slash commands registered");
+  try {
+    console.log("📦 Registering slash commands...");
+    await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+      body: commands,
+    });
+    console.log("✅ Slash commands registered!");
+  } catch (error) {
+    console.error("❌ Failed to register commands:", error);
+  }
 };

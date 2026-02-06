@@ -66,7 +66,7 @@ Sebelum berinteraksi, **harap baca aturan** berikut agar suasana tetap positif d
       )
       .setFooter({
         text: "Barbar Boys",
-        iconURL: interaction.guild.iconURL(),
+        iconURL: interaction.guild?.iconURL() || null,
       })
       .setTimestamp();
 
@@ -75,6 +75,8 @@ Sebelum berinteraksi, **harap baca aturan** berikut agar suasana tetap positif d
       ephemeral: true,
     });
 
-    await interaction.channel.send({ embeds: [rulesEmbed] });
+    if (interaction.channel) {
+      await interaction.channel.send({ embeds: [rulesEmbed] });
+    }
   },
 };

@@ -10,10 +10,11 @@ module.exports = {
       await command.execute(interaction);
     } catch (err) {
       console.error(err);
-      await interaction.reply({
-        content: "❌ Error executing command",
-        ephemeral: true,
-      });
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply("❌ Error");
+      } else {
+        await interaction.reply({ content: "❌ Error", ephemeral: true });
+      }
     }
   },
 };

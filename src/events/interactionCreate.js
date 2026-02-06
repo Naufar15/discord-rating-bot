@@ -1,10 +1,16 @@
 module.exports = {
   name: "interactionCreate",
+
   async execute(interaction, client) {
+    console.log("🔥 interaction masuk:", interaction.commandName);
+
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
-    if (!command) return;
+    if (!command) {
+      console.log("❌ Command tidak ditemukan");
+      return;
+    }
 
     try {
       await command.execute(interaction, client);

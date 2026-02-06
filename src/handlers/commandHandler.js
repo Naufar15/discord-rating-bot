@@ -9,12 +9,6 @@ module.exports = (client) => {
 
   for (const file of commandFiles) {
     const command = require(`../commands/${file}`);
-
-    if (!command.data || !command.execute) {
-      console.log(`⚠️ Command ${file} invalid`);
-      continue;
-    }
-
     client.commands.set(command.data.name, command);
   }
 

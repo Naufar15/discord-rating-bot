@@ -20,6 +20,8 @@ require("./src/server/keepAlive");
 require("./src/handlers/commandHandler")(client);
 require("./src/handlers/eventHandler")(client);
 
+console.log("TOKEN:", process.env.TOKEN ? "ADA" : "KOSONG");
+
 // LOGIN (WAJIB ADA LOG INI)
 client
   .login(process.env.TOKEN)

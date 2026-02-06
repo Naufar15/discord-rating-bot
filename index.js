@@ -1,19 +1,23 @@
 require("dotenv").config();
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
-
-const loadCommands = require("./src/handlers/commandHandler");
-const loadEvents = require("./src/handlers/eventHandler");
-
-// 🔥 INI YANG PENTING
-require("./src/server/keepAlive");
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
 client.commands = new Collection();
 
-loadCommands(client);
-loadEvents(client);
+console.log("🚀 Bot starting...");
 
-client.login(process.env.TOKEN);
+require("./src/handlers/commandHandler")(client);
+require("./src/handlers/eventHandler")(client);
+
+client
+  .login(process.env.TOKEN)
+  .then(() => console.log("✅ Bot logged in"))
+  .catch((err) => console.error("❌ Login failed:", err));

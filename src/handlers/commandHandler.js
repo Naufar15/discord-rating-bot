@@ -2,15 +2,17 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = (client) => {
-  const commandsPath = path.join(__dirname, "../commands");
+  const commandPath = path.join(__dirname, "../commands");
   const commandFiles = fs
-    .readdirSync(commandsPath)
+    .readdirSync(commandPath)
     .filter((file) => file.endsWith(".js"));
 
   for (const file of commandFiles) {
-    const command = require(`../commands/${file}`);
-    client.commands.set(command.data.name, command);
+    const command = require(path.join(commandPath, file));
+    if (command.data && command.execute) {
+      client.commands.set(command.data.name, command);
+    }
   }
 
-  console.log(`✅ Loaded ${client.commands.size} commands`);
+  console.log("✅ Commands loaded:", client.commands.size);
 };

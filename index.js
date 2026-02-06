@@ -6,19 +6,15 @@ const {
   Collection,
 } = require("discord.js");
 
-// 🚀 WAJIB JALAN DULU
-require("./src/server/keepAlive");
-
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildMessages,
-  ],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
   partials: [Partials.User, Partials.GuildMember],
 });
 
 client.commands = new Collection();
+
+// keep alive
+require("./src/server/keepAlive");
 
 // handlers
 require("./src/handlers/commandHandler")(client);

@@ -22,8 +22,11 @@ require("./src/handlers/eventHandler")(client);
 
 console.log("TOKEN:", process.env.TOKEN ? "ADA" : "KOSONG");
 
-// LOGIN (WAJIB ADA LOG INI)
 client
   .login(process.env.TOKEN)
-  .then(() => console.log("🤖 Bot online"))
-  .catch((err) => console.error("❌ LOGIN FAILED:", err));
+  .then(() => {
+    console.log("🤖 Bot online & connected to Discord");
+  })
+  .catch((err) => {
+    console.error("❌ LOGIN FAILED FULL:", err);
+  });

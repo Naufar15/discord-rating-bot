@@ -8,19 +8,12 @@ module.exports = {
 
     try {
       await command.execute(interaction);
-    } catch (error) {
-      console.error(error);
-
+    } catch (err) {
+      console.error(err);
       if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: "❌ Terjadi error saat menjalankan command.",
-          ephemeral: true,
-        });
+        await interaction.followUp({ content: "❌ Error", ephemeral: true });
       } else {
-        await interaction.reply({
-          content: "❌ Terjadi error saat menjalankan command.",
-          ephemeral: true,
-        });
+        await interaction.reply({ content: "❌ Error", ephemeral: true });
       }
     }
   },

@@ -15,10 +15,10 @@ const client = new Client({
   partials: [Partials.User, Partials.GuildMember],
 });
 
+// WAJIB
 client.commands = new Collection();
 
 require("./src/server/keepAlive");
-
 require("./src/handlers/commandHandler")(client);
 require("./src/handlers/eventHandler")(client);
 

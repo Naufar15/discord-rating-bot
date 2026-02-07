@@ -15,6 +15,6 @@ const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
     );
     console.log("✅ Command sinkron tanpa perlu re-invite!");
   } catch (error) {
-    console.error("❌ Gagal sinkronisasi:", error);
+    console.error("❌ Gagal sinkronisas:", error);
   }
 })();

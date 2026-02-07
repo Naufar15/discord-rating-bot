@@ -1,3 +1,10 @@
+// index.js (Bagian tengah)
+client.commands = new Collection();
+
+// Memuat handler
+require("./src/handlers/commandHandler")(client);
+require("./src/handlers/eventHandler")(client);
+
 require("dotenv").config();
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const express = require("express");

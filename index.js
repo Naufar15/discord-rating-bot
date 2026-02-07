@@ -1,47 +1,61 @@
-// index.js (Bagian tengah)
-client.commands = new Collection();
-
-// Memuat handler
-require("./src/handlers/commandHandler")(client);
-require("./src/handlers/eventHandler")(client);
-
 require("dotenv").config();
-const { Client, GatewayIntentBits, Partials } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Events } = require("discord.js");
 const express = require("express");
 
+// 1. Inisialisasi Express (Web Server agar Render tetap 'Live')
 const app = express();
-app.get("/", (req, res) => res.send("Bot is Live!"));
-app.listen(process.env.PORT || 3000);
+app.get("/", (req, res) => res.send("✅ Bot NANONANO is Online!"));
+app.listen(process.env.PORT || 3000, () => {
+  console.log("🌐 Web Server listening on port 3000");
+});
 
+// 2. Inisialisasi Client Discord (Wajib di atas sebelum memanggil client.commands)
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.MessageContent,
   ],
-  // Partials membantu bot menerima data meskipun datanya tidak lengkap (cache kosong)
-  partials: [
-    Partials.Message,
-    Partials.Channel,
-    Partials.Reaction,
-    Partials.GuildMember,
-  ],
-  shards: "auto", // Membantu koneksi lebih stabil
 });
 
-// DEBUGGING LOGS
-client.on("debug", (info) => console.log(`📡 [DEBUG]: ${info}`));
-client.on("error", (err) => console.error(`❌ [ERROR]: ${err.message}`));
+// 3. Inisialisasi Collection untuk Commands
+client.commands = new Collection();
 
-client.once("ready", () => {
-  console.log("-----------------------------------------");
-  console.log(`✅ BOT ONLINE: ${client.user.tag}`);
-  console.log("-----------------------------------------");
+// 4. Debug Mode (Melihat komunikasi mentah dengan Discord)
+client.on("debug", (info) => {
+  if (info.includes("Heartbeat") || info.includes("Identify")) {
+    console.log(`📡 [DEBUG]: ${info}`);
+  }
 });
 
-console.log("🔍 Memulai koneksi ke Discord...");
+// 5. Memuat Handlers (Pastikan folder dan file ini ada di project kamu)
+console.log("🚀 --- MEMULAI PROSES BOOTING ---");
+try {
+  console.log("📦 1. Memuat Handlers...");
+  require("./src/handlers/commandHandler")(client);
+  require("./src/handlers/eventHandler")(client);
+  console.log("✅ Handlers berhasil diinisialisasi");
+} catch (err) {
+  console.error("❌ Gagal memuat handler:", err.message);
+}
 
-client.login(process.env.TOKEN).catch((err) => {
-  console.error("❌ GAGAL LOGIN:", err.message);
+// 6. Login ke Discord
+const token = process.env.TOKEN;
+console.log(`🔍 2. Mengecek Token: ${token ? "Terbaca" : "KOSONG"}`);
+
+client
+  .login(token)
+  .then(() => {
+    console.log("🤖 Proses login ke Discord dimulai...");
+  })
+  .catch((err) => {
+    console.error("❌ GAGAL LOGIN:");
+    console.error(err.message);
+  });
+
+// 7. Error Handling Global agar tidak crash mendadak
+process.on("unhandledRejection", (error) => {
+  console.error("⚠️ Unhandled promise rejection:", error);
 });

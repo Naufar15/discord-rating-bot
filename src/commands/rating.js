@@ -28,7 +28,7 @@ module.exports = {
     const allowedChannels = ["1424685610790293524", "1153253123427680266"];
 
     // ID Role yang diizinkan (Hanya role ini yang bisa rating)
-    const allowedRole = "1424684961750843503";
+    const allowedRole = ["1424684961750843503", "1153234026254053407"];
 
     // 1. Cek Apakah Channel Valid?
     if (!allowedChannels.includes(interaction.channelId)) {

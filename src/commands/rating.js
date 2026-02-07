@@ -24,47 +24,53 @@ module.exports = {
     // 🔒 ZONE: SECURITY CHECK (Cek Izin Akses)
     // ===============================================================
 
-    // Daftar ID Channel yang diizinkan (Rating hanya bisa di sini)
+    // 1. Daftar ID Channel yang diizinkan
     const allowedChannels = ["1424685610790293524", "1153253123427680266"];
 
-    // ID Role yang diizinkan (Hanya role ini yang bisa rating)
-    const allowedRole = ["1424684961750843503", "1153234026254053407"];
+    // 2. Daftar ID Role yang diizinkan (TAMBAHAN ROLE BARU DI SINI)
+    const allowedRoles = [
+      "1424684961750843503", // Role A (Customer)
+      "1153234026254053407", // Role B (Role Baru)
+    ];
 
-    // 1. Cek Apakah Channel Valid?
+    // --- LOGIKA PENGECEKAN CHANNEL ---
     if (!allowedChannels.includes(interaction.channelId)) {
       return interaction.reply({
         content: `❌ **Access Denied!**\nYou cannot use this command here.\nPlease use it in the designated review channels.`,
-        ephemeral: true, // Hanya user yang melihat pesan error ini
+        ephemeral: true,
       });
     }
 
-    // 2. Cek Apakah User Punya Role Valid?
-    if (!interaction.member.roles.cache.has(allowedRole)) {
+    // --- LOGIKA PENGECEKAN ROLE (Revisi: Cek salah satu dari list) ---
+    // Fungsi ini mengecek apakah user punya minimal SATU role dari daftar di atas
+    const hasPermission = allowedRoles.some((roleId) =>
+      interaction.member.roles.cache.has(roleId),
+    );
+
+    if (!hasPermission) {
+      // Kita buat pesan error yang mencantumkan semua role yang diizinkan
+      const rolesTag = allowedRoles.map((id) => `<@&${id}>`).join(" or ");
+
       return interaction.reply({
-        content: `❌ **Access Denied!**\nYou need the <@&${allowedRole}> role to submit a rating.`,
+        content: `❌ **Access Denied!**\nYou need the ${rolesTag} role to submit a rating.`,
         ephemeral: true,
       });
     }
 
     // ===============================================================
-    // ✅ ZONE: EXECUTION (Tampilan Custom Kamu)
+    // ✅ ZONE: EXECUTION (Tampilan Custom Kamu - TIDAK BERUBAH)
     // ===============================================================
 
-    // Ambil data inputan user
     const starsCount = interaction.options.getInteger("stars");
     const comment = interaction.options.getString("comment");
 
-    // Generate string bintang dengan Emoji Custom
-    // Pastikan ID Emoji <:Star:...> ini benar dan bot ada di server tempat emoji itu berada
     const stars = "<:Star:1469717334930358412>".repeat(starsCount);
 
-    // --- 🖼️ IMAGE CONFIGURATION ---
-    const logoUrl = "https://i.vgy.me/kZr5yI.png"; // Logo Toko (Kanan Atas)
-    const bannerUrl = "https://i.vgy.me/oeXaa7.png"; // Banner Besar (Bawah)
-    // -----------------------------
+    const logoUrl = "https://i.vgy.me/kZr5yI.png";
+    const bannerUrl = "https://i.vgy.me/oeXaa7.png";
 
     const embed = new EmbedBuilder()
-      .setColor("#FFA0A0") // Warna Pink Custom
+      .setColor("#FFA0A0")
       .setTitle("Customer Review")
       .setThumbnail(logoUrl)
       .setDescription(
@@ -73,7 +79,7 @@ module.exports = {
       .addFields(
         {
           name: "<:Star:1469717334930358412> Rating:",
-          value: `${stars}`, // Menggunakan emoji bintang custom
+          value: `${stars}`,
           inline: false,
         },
         {
@@ -83,7 +89,7 @@ module.exports = {
         },
         {
           name: "<a:pixdreamsnani73:1424709901783011348> Comment",
-          value: `\`\`\`${comment}\`\`\``, // Kotak gelap (code block)
+          value: `\`\`\`${comment}\`\`\``,
           inline: false,
         },
       )

@@ -2,15 +2,21 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = (client) => {
+  // Sesuaikan path ini dengan struktur foldermu
   const eventsPath = path.join(__dirname, "../events");
   const eventFiles = fs
     .readdirSync(eventsPath)
-    .filter((f) => f.endsWith(".js"));
+    .filter((file) => file.endsWith(".js"));
 
   for (const file of eventFiles) {
-    const event = require(path.join(eventsPath, file));
-    client.on(event.name, (...args) => event.execute(...args));
-  }
+    const filePath = path.join(eventsPath, file);
+    const event = require(filePath);
 
+    if (event.once) {
+      client.once(event.name, (...args) => event.execute(...args, client));
+    } else {
+      client.on(event.name, (...args) => event.execute(...args, client));
+    }
+  }
   console.log(`✅ Events loaded: ${eventFiles.length}`);
 };

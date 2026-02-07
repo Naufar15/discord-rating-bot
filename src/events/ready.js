@@ -1,13 +1,12 @@
-module.exports = {
-  name: "ready",
-  execute(client) {
-    console.log(`🤖 Bot online as ${client.user.tag}`);
+const { Events } = require("discord.js");
 
-    setInterval(
-      () => {
-        console.log("🟢 Bot heartbeat ping");
-      },
-      1000 * 60 * 5,
-    );
+module.exports = {
+  name: Events.ClientReady,
+  once: true,
+  execute(client) {
+    console.log("-----------------------------------------");
+    console.log(`🤖 STATUS: ONLINE!`);
+    console.log(`✅ Masuk sebagai: ${client.user.tag}`);
+    console.log("-----------------------------------------");
   },
 };

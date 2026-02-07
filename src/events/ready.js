@@ -1,7 +1,7 @@
 const { Events } = require("discord.js");
 
 module.exports = {
-  name: Events.ClientReady,
+  name: Events.ClientReady, // Ini akan berisi string 'ready'
   once: true,
   execute(client) {
     console.log("-----------------------------------------");

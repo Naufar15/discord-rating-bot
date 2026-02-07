@@ -1,32 +1,30 @@
-require("dotenv").config();
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+console.log("1. Memulai Inisialisasi...");
 
-console.log("🚀 Bot starting...");
-
+// Pastikan Intent lengkap
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildPresences, // Wajib untuk boost
   ],
 });
 
-client.commands = new Collection();
-
-// keep web service alive (WAJIB BUAT RENDER)
+console.log("2. Memuat Server...");
 require("./src/server/keepAlive");
 
-// load handlers
-require("./src/handlers/commandHandler")(client);
-require("./src/handlers/eventHandler")(client);
+console.log("3. Memuat Handlers...");
+try {
+  require("./src/handlers/commandHandler")(client);
+  console.log("   - Command Handler OK");
+  require("./src/handlers/eventHandler")(client);
+  console.log("   - Event Handler OK");
+} catch (err) {
+  console.error("❌ ERROR SAAT LOAD HANDLER:", err);
+}
 
-console.log("TOKEN:", process.env.TOKEN ? "ADA" : "KOSONG");
-
+console.log("4. Mencoba Login...");
 client
   .login(process.env.TOKEN)
-  .then(() => {
-    console.log("🤖 Bot online & connected to Discord");
-  })
-  .catch((err) => {
-    console.error("❌ LOGIN FAILED FULL:", err);
-  });
+  .then(() => console.log("🤖 Bot online & connected!"))
+  .catch((err) => console.error("❌ LOGIN FAILED:", err));

@@ -1,26 +1,28 @@
-const { Events } = require("discord.js");
-
+// src/events/interactionCreate.js
 module.exports = {
-  name: Events.InteractionCreate,
+  name: "interactionCreate",
   async execute(interaction, client) {
-    // Tambahkan client di sini
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
 
-    if (!command) {
-      console.error(`Command ${interaction.commandName} tidak ditemukan.`);
-      return;
-    }
+    if (!command) return;
 
     try {
       await command.execute(interaction);
     } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content: "Terjadi error saat menjalankan command!",
-        ephemeral: true,
-      });
+      console.error(`Error pada command ${interaction.commandName}:`, error);
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({
+          content: "Ada error saat menjalankan perintah ini!",
+          ephemeral: true,
+        });
+      } else {
+        await interaction.reply({
+          content: "Ada error saat menjalankan perintah ini!",
+          ephemeral: true,
+        });
+      }
     }
   },
 };

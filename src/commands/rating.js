@@ -1,3 +1,4 @@
+// src/commands/rating.js
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
     .addIntegerOption((option) =>
       option
         .setName("stars")
-        .setDescription("Select number of stars (1–5)")
+        .setDescription("Select 1-5 stars")
         .setRequired(true)
         .setMinValue(1)
         .setMaxValue(5),
@@ -15,22 +16,27 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("comment")
-        .setDescription("Write your feedback or review")
+        .setDescription("Write your feedback")
         .setRequired(true),
     ),
 
   async execute(interaction) {
-    const stars = interaction.options.getInteger("stars");
+    const starsCount = interaction.options.getInteger("stars");
     const comment = interaction.options.getString("comment");
+    const stars = "⭐".repeat(starsCount);
 
     const embed = new EmbedBuilder()
       .setColor("#00AEEF")
-      .setTitle("⭐ New Rating")
+      .setTitle("Customer Review")
+      .setThumbnail(interaction.user.displayAvatarURL())
+      .setDescription("**Order Completed Successfully!** 🛒")
       .addFields(
-        { name: "Stars", value: "⭐".repeat(stars), inline: true },
-        { name: "Comment", value: comment },
+        { name: "⭐ Rating:", value: stars },
+        { name: "👤 Customer", value: `<@${interaction.user.id}>` },
+        { name: "💬 Comment", value: comment },
       )
-      .setTimestamp();
+      .setTimestamp()
+      .setFooter({ text: `Reviewed by: ${interaction.user.username}` });
 
     await interaction.reply({ embeds: [embed] });
   },

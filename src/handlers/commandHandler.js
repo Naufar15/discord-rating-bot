@@ -1,21 +1,25 @@
-// Di dalam commandHandler.js setelah loop loading command
 const { REST, Routes } = require("discord.js");
 
-const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+module.exports = async (client) => {
+  // ... (kode loading command kamu di sini) ...
+  const commandsArray = client.commands.map((cmd) => cmd.data.toJSON());
 
-(async () => {
+  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+
   try {
-    console.log("🔄 Memperbarui Guild Commands...");
+    console.log("🔄 Memulai Sinkronisasi Command ke Guild...");
+
+    // GUNAKAN applicationGuildCommands agar update INSTAN (tanpa nunggu 1 jam)
     await rest.put(
-      // applicationGuildCommands membuat update INSTAN (tanpa nunggu 1 jam)
       Routes.applicationGuildCommands(
         process.env.CLIENT_ID,
         process.env.GUILD_ID,
       ),
-      { body: client.commands.map((cmd) => cmd.data.toJSON()) },
+      { body: commandsArray },
     );
-    console.log("✅ Guild Commands Sinkron!");
+
+    console.log("✅ Command Berhasil Diperbarui di Server!");
   } catch (error) {
-    console.error("❌ Gagal sinkronisasi:", error);
+    console.error("❌ Gagal sinkronisasi command:", error);
   }
-})();
+};

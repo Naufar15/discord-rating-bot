@@ -39,7 +39,7 @@ console.log("🚀 --- MEMULAI PROSES BOOTING ---");
 
 // Debugging Koneksi
 client.on("debug", (info) => {
-  // Hanya tampilkan log penting biar tidak nyepam
+  // Hanya tampilkan log agar tidak nyepam
   if (info.includes("Heartbeat") || info.includes("Identify")) {
     console.log(`📡 [DEBUG]: ${info}`);
   }

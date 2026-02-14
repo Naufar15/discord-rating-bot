@@ -1,15 +1,24 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits, Collection, Events } = require("discord.js");
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const express = require("express");
 
-// 1. Inisialisasi Express (Web Server agar Render tetap 'Live')
+// ===============================================================
+// 🌐 1. WEB SERVER (Agar Render tidak mematikan bot)
+// ===============================================================
 const app = express();
-app.get("/", (req, res) => res.send("✅ Bot NANONANO is Online!"));
-app.listen(process.env.PORT || 3000, () => {
-  console.log("🌐 Web Server listening on port 3000");
+
+app.get("/", (req, res) => {
+  res.send("✅ Bot NANONANO is Online & Ready!");
 });
 
-// 2. Inisialisasi Client Discord (Wajib di atas sebelum memanggil client.commands)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🌐 Web Server running on port ${PORT}`);
+});
+
+// ===============================================================
+// 🤖 2. DISCORD CLIENT SETUP
+// ===============================================================
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -20,60 +29,61 @@ const client = new Client({
   ],
 });
 
-// 3. Inisialisasi Collection untuk Commands
+// Buat koleksi command
 client.commands = new Collection();
 
-// 4. Debug Mode (Melihat komunikasi mentah dengan Discord)
+// ===============================================================
+// 📦 3. LOAD HANDLERS
+// ===============================================================
+console.log("🚀 --- MEMULAI PROSES BOOTING ---");
+
+// Debugging Koneksi
 client.on("debug", (info) => {
+  // Hanya tampilkan log penting biar tidak nyepam
   if (info.includes("Heartbeat") || info.includes("Identify")) {
     console.log(`📡 [DEBUG]: ${info}`);
   }
 });
 
-// 5. Memuat Handlers (Pastikan folder dan file ini ada di project kamu)
-console.log("🚀 --- MEMULAI PROSES BOOTING ---");
 try {
-  console.log("📦 1. Memuat Handlers...");
+  console.log("📦 Memuat Handlers...");
+  // Pastikan path folder ini BENAR sesuai struktur foldermu
   require("./src/handlers/commandHandler")(client);
   require("./src/handlers/eventHandler")(client);
   console.log("✅ Handlers berhasil diinisialisasi");
 } catch (err) {
-  console.error("❌ Gagal memuat handler:", err.message);
+  console.error("❌ CRITICAL ERROR saat memuat handler:", err);
 }
 
-// 6. Login ke Discord
+// ===============================================================
+// 🔄 4. AUTO-REFRESH SYSTEM (Anti-Zombie Connection)
+// ===============================================================
+// Bot akan restart otomatis setiap 6 jam untuk menyegarkan koneksi
+const RESTART_INTERVAL = 6 * 60 * 60 * 1000; // 6 Jam
+
+setTimeout(() => {
+  console.log("⏰ [AUTO-REFRESH] Waktunya restart rutin...");
+  process.exit(1); // Memaksa Render untuk menyalakan ulang bot
+}, RESTART_INTERVAL);
+
+console.log(`🕒 Auto-Refresh Timer: Aktif (Restart tiap 6 jam)`);
+
+// ===============================================================
+// 🔑 5. LOGIN KE DISCORD
+// ===============================================================
 const token = process.env.TOKEN;
-console.log(`🔍 2. Mengecek Token: ${token ? "Terbaca" : "KOSONG"}`);
+
+if (!token) {
+  console.error("❌ ERROR: Token tidak ditemukan di .env!");
+  process.exit(1);
+}
 
 client
   .login(token)
-  .then(() => {
-    console.log("🤖 Proses login ke Discord dimulai...");
-  })
-  .catch((err) => {
-    console.error("❌ GAGAL LOGIN:");
-    console.error(err.message);
-  });
+  .then(() => console.log("🤖 Sedang login ke Discord..."))
+  .catch((err) => console.error("❌ GAGAL LOGIN:", err));
 
-// 7. Error Handling Global agar tidak crash mendadak
+// Mencegah bot mati mendadak karena error kecil
 process.on("unhandledRejection", (error) => {
-  console.error("⚠️ Unhandled promise rejection:", error);
+  console.error("⚠️ Unhandled Promise Rejection:", error);
 });
-
-// ===============================================================
-// 🔄 AUTO-REFRESH SYSTEM (Anti-Zombie Connection)
-// ===============================================================
-// Bot akan mematikan dirinya sendiri setiap 6 jam.
-// Render akan otomatis me-restart bot ini kembali dalam detik.
-// Ini memastikan koneksi ke Discord selalu "segar" dan tidak nyangkut.
-
-const RESTART_INTERVAL = 6 * 60 * 60 * 1000; // 6 Jam dalam milidetik
-
-setInterval(() => {
-  console.log(
-    "⏰ [AUTO-REFRESH] Waktunya merestart koneksi agar tidak lemot...",
-  );
-  process.exit(1); // Mematikan proses dengan kode 1 (Force Exit)
-}, RESTART_INTERVAL);
-
-console.log(`🕒 Auto-Refresh timer dipasang: Bot akan restart setiap 6 jam.`);

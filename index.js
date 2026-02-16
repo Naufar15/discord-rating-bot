@@ -1,8 +1,23 @@
 require("dotenv").config();
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const express = require("express"); // Panggil Express lagi
 
 // ===============================================================
-// 🤖 DISCORD CLIENT SETUP (Murni Tanpa Web Server)
+// 🌐 1. WEB SERVER "PANCINGAN" (Agar Railway Tidak Mematikan Bot)
+// ===============================================================
+const app = express();
+const PORT = process.env.PORT || 3000; // Railway otomatis isi PORT ini
+
+app.get("/", (req, res) => {
+  res.send("✅ Bot NANONANO is Running on Railway!");
+});
+
+app.listen(PORT, () => {
+  console.log(`🌐 Web Server listening on port ${PORT}`);
+});
+
+// ===============================================================
+// 🤖 2. DISCORD CLIENT SETUP
 // ===============================================================
 const client = new Client({
   intents: [
@@ -16,16 +31,15 @@ const client = new Client({
 
 client.commands = new Collection();
 
-// Debugging
+// Debugging Error
 client.on("debug", (info) => {
-  // Tampilkan log kalau ada error koneksi saja
   if (info.includes("401") || info.includes("Hit rate limit")) {
     console.log(`🚨 [DISCORD ERROR]: ${info}`);
   }
 });
 
 // ===============================================================
-// 📦 LOAD HANDLERS
+// 📦 3. LOAD HANDLERS
 // ===============================================================
 console.log("🚀 --- BOOTING START ---");
 try {
@@ -37,12 +51,12 @@ try {
 }
 
 // ===============================================================
-// 🔑 LOGIN
+// 🔑 4. LOGIN
 // ===============================================================
 const token = process.env.TOKEN;
 
 if (!token) {
-  console.error("❌ ERROR: Token tidak ditemukan di Environment Variables!");
+  console.error("❌ ERROR: Token tidak ditemukan!");
   process.exit(1);
 }
 

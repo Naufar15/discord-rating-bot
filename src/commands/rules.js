@@ -21,6 +21,7 @@ Sebelum berinteraksi, **harap baca aturan** berikut agar suasana tetap positif d
 ---
 ## 📢 **Announcements**
 - 📣 Info penting dari admin akan muncul di https://discord.com/channels/392301202206883850/1153262880947458078.
+- 🎉 **Info Event dan Promo** https://discord.com/channels/392301202206883850/1474014563597811783 
 - 📣 Info mod gratisan https://discord.com/channels/392301202206883850/1454182321585656034.  
 - 🔴 sedang stream <#1153262934240284673>.  
 - 🎥 Share link livestream kalian <#1153302328733077525>.  

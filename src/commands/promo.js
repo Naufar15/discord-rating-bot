@@ -14,7 +14,8 @@ module.exports = {
     const promoImageUrl = "https://files.catbox.moe/bpsjnt.png"; // Ini link contoh (Banner kamu sebelumnya)
 
     // 2. Judul dan Deskripsi Promo
-    const promoTitle = ":Moon: **RAMADHAN BLESSING 2026**  ";
+    const promoTitle =
+      "<a:MoonSparkle:1474018947602059407> **RAMADHAN BLESSING 2026**  ";
     const promoDesc = "*“A special seasonal collection crafted for Ramadhan.”*";
 
     // 3. Warna Garis Samping (Hex Code)

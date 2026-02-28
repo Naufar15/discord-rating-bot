@@ -7,8 +7,8 @@ module.exports = {
   execute(client) {
     console.log("-----------------------------------------");
     console.log(`🤖 STATUS: ONLINE!`);
-    console.log(`✅ Masuk sebagai: ${client.user.tag}`);
-    console.log(`🟢 Lingkaran hijau aktif di Discord.`);
+    console.log(`✅ Maasuk sebagai: ${client.user.tag}`);
+    console.log(`🟢 Lingkaran discord aktif di discord.`);
     console.log("-----------------------------------------");
   },
 };

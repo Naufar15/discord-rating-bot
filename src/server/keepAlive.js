@@ -5,9 +5,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("✅ Bot is Alive");
+  res.send("✅ Bot is alive");
 });
 
 app.listen(PORT, () => {
-  console.log(`🌐 Web Server listening on port ${PORT}`);
+  console.log(`🌐 Web server listening on port ${PORT}`);
 });

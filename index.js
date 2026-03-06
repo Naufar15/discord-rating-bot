@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000; // Railway otomatis isi PORT ini
 
 app.get("/", (req, res) => {
-  res.send("✅ Bot NANONANO is Running on Railway!");
+  res.send("✅ Bot is running!");
 });
 
 app.listen(PORT, () => {

@@ -21,7 +21,7 @@ module.exports = {
 
   async execute(interaction) {
     // ===============================================================
-    // 🔒 ZONE: SECURITY CHECK (Cek Izin Akses)
+    // 🔒 ZONE: SECURITY CHECK
     // ===============================================================
 
     // 1. Daftar ID Channel yang diizinkan

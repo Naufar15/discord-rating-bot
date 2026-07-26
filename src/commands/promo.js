@@ -3,11 +3,11 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("promo")
-    .setDescription("📢 Cek promo, diskon, dan penawaran terbaru!"),
+    .setDescription("📢 Cek Promo dan Diskon!"),
 
   async execute(interaction) {
     // ===============================================================
-    // ⚙️ KONFIGURASI PROMO (Edit bagian ini saat ada promo baru)
+    // ⚙️ Konfigurasi Promo (Edit bagian ini saat ada promo baru)
     // ===============================================================
 
     // 1. Upload poster promosimu ke vgy.me / imgur, lalu paste link-nya di sini:

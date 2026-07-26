@@ -1,4 +1,4 @@
-const { Events } = require("discord.js");
+const { Events, ActivityType } = require("discord.js");
 
 module.exports = {
   name: Events.ClientReady,
@@ -6,8 +6,21 @@ module.exports = {
   execute(client) {
     console.log("-----------------------------------------");
     console.log(`🤖 STATUS: ONLINE!`);
-    console.log(`✅ Masuk sebagai : ${client.user.tag}`);
-    console.log(`🟢 Lingkaran discord aktif di discord.`);
+    console.log(`✅ Masuk sebagai: ${client.user.tag}`);
     console.log("-----------------------------------------");
+
+    // ==========================================
+    // ⚙️ PENGATURAN CUSTOM STATUS BOT
+    // ==========================================
+    client.user.setPresence({
+      activities: [
+        {
+          name: "Custom Status",
+          type: ActivityType.Custom, // Tipe status: Custom
+          state: "BUKA KALO NGGA KETIDURAN", // Teks yang akan muncul di profil bot
+        },
+      ],
+      status: "idle", // Pilihan: 'online', 'idle', 'dnd', 'invisible'
+    });
   },
 };

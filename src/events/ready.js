@@ -17,7 +17,7 @@ module.exports = {
         {
           name: "Custom Status",
           type: ActivityType.Custom, // Tipe status: Custom
-          state: "BUKA KALO NGGA KETIDURAN", // Teks yang akan muncul di profil bot
+          state: "FAST RESPON KALO GA KETIDURAN", // Teks yang akan muncul di profil bot
         },
       ],
       status: "idle", // Pilihan: 'online', 'idle', 'dnd', 'invisible'
